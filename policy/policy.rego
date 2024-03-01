@@ -6,28 +6,35 @@ import future.keywords
 # Objectif : S'assurer que la version de Terraform utilisée est conforme à une version spécifique.
 default allow_terraform_version = false
 allow_terraform_version {
-   input.format_version == "1.2" 
-   input.terraform_version == "1.7.3"
+   input.format_version >= "1.2"
+   input.terraform_version >= "1.7.3"
 }
 
 # Politique de Version d'AMI
 # Objectif : S'assurer que seules les versions d'AMI approuvées sont utilisées.
-default allow_ami = false
+default allow_ami = true
 allow_ami {
      every instance in input.planned_values.root_module.resources
     {
-      instance.values.ami == "ami-0c7217cdde317cfec"
+      instance.values.ami == "ami-07d9b9ddc6cd8dd30"
     }
    
    
 }
-
+allow_ami {
+     every instance in input.planned_values.root_module.resources
+    {
+      instance.values.ami == "ami-07761f3ae34c4478d"
+    }
+   
+   
+}
 # Politique de Clé SSH
 # Objectif : Garantir l'utilisation de clés SSH approuvées.
 default allow_ssh_key = false
  allow_ssh_key {
     every instance in input.planned_values.root_module.resources
-     {instance.values.key_name  == "vprofile-sonar-key"}
+     {instance.values.key_name  == "ci-vprofile-key"}
  }
 
 # Politique de Taille d'Instance
@@ -40,12 +47,17 @@ allow_instance_type {
  }
 
 # Politique de Groupe de Sécurité
-# Objectif : S'assurer que les instances utilisent uniquement le groupe de sécurité Jenkins.
-default allow_security_group = false
+# Objectif : S'assurer que les instances utilisent uniquement le groupe de sécurité approprié.
+default allow_security_group = true
 
 allow_security_group {
     every instance in input.planned_values.root_module.resources {
-       instance.values.vpc_security_group_ids[_] == "sg-0b85f82d974c1e318"
+       instance.values.vpc_security_group_ids[_] == "sg-0ed359c95d65d390d"
+    }
+ }
+allow_security_group {
+    every instance in input.planned_values.root_module.resources {
+       instance.values.vpc_security_group_ids[_] == "sg-0723c6460a7a860e6"
     }
  }
 
