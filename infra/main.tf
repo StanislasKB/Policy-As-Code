@@ -1,6 +1,6 @@
 # Configuration du fournisseur AWS
 provider "aws" {
-  region = "us-east-1a"
+  region = "us-east-1"
 }
 
 # Définition de la ressource EC2 (instance) pour le server de Stagging
@@ -29,7 +29,7 @@ resource "aws_instance" "staging_server" {
 
 # Définition de la ressource EC2 (instance) pour le server backend
 resource "aws_instance" "backend_server" {
-  ami             = "ami-07761f3ae34c4478d"  # ID AMI d'Amazon Linux 2
+  ami             = "ami-002070d43b0a4f171"  # ID AMI de CentOS
   instance_type   = "t2.micro"
   key_name        = "ci-vprofile-key"  #  nom de la clé SSH
 
