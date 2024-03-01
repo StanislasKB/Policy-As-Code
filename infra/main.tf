@@ -1,6 +1,6 @@
 # Configuration du fournisseur AWS
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-1a"
 }
 
 # Définition de la ressource EC2 (instance) pour le server de Stagging
