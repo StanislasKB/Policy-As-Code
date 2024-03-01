@@ -16,7 +16,7 @@ resource "aws_instance" "staging_server" {
     volume_size = 20
     volume_type = "gp2"
     encrypted   = true # Chiffrement du volume EBS
-    device_name = "/dev/sda"
+    device_name = "/dev/sdb"
   }
 
 
@@ -39,7 +39,7 @@ resource "aws_instance" "backend_server" {
     volume_size = 20
     volume_type = "gp2"
     encrypted   = true # Chiffrement du volume EBS
-    device_name = "/dev/sda"
+    device_name = "/dev/sdb"
   }
 
   # Configuration du user-data
@@ -120,7 +120,7 @@ resource "aws_instance" "prod_server" {
     volume_size = 20
     volume_type = "gp2"
     encrypted   = true # Chiffrement du volume EBS
-    device_name = "/dev/sda"
+    device_name = "/dev/sdb"
   }
 
 
