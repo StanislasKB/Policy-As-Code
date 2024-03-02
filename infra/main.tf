@@ -7,7 +7,7 @@ provider "aws" {
 resource "aws_instance" "staging_server" {
   ami             = "ami-07d9b9ddc6cd8dd30"  # ID AMI d'Ubuntu
   instance_type   = "t2.micro"
-  key_name        = "cd-vprofile-key"  # nom de la clé SSH modifiée
+  key_name        = "ci-vprofile-key"  # nom de la clé SSH
 
   # Définition du groupe de sécurité (SG) Stagging existant
   vpc_security_group_ids = ["sg-0ed359c95d65d390d"]
