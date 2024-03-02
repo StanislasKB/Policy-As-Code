@@ -29,7 +29,7 @@ resource "aws_instance" "staging_server" {
 
 # Définition de la ressource EC2 (instance) pour le server backend
 resource "aws_instance" "backend_server" {
-  ami             = "ami-002070d43b0a4f171"  # ID AMI de CentOS
+  ami             = "ami-07d9b9ddc6cd8dd30"  #  ID AMI de Ubuntu - CentOS(ami-002070d43b0a4f171)
   instance_type   = "t2.micro"
   key_name        = "ci-vprofile-key"  #  nom de la clé SSH
 
@@ -46,10 +46,10 @@ resource "aws_instance" "backend_server" {
    user_data = <<-EOF
                 #!/bin/bash
 DATABASE_PASS='admin123'
-yum update -y
-yum install epel-release -y
-yum install mariadb-server -y
-yum install wget git unzip -y
+apt update -y
+apt install epel-release -y
+apt install mariadb-server -y
+apt install wget git unzip -y
 
 #mysql_secure_installation
 sed -i 's/^127.0.0.1/0.0.0.0/' /etc/my.cnf
@@ -76,17 +76,17 @@ mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES"
 # Restart mariadb-server
 systemctl restart mariadb
 # SETUP MEMCACHE
-yum install memcached -y
+apt install memcached -y
 systemctl start memcached
 systemctl enable memcached
 systemctl status memcached
 memcached -p 11211 -U 11111 -u memcached -d
 sleep 30
-yum install socat -y
-yum install wget -y
+apt install socat -y
+apt install wget -y
 wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.10/rabbitmq-server-3.6.10-1.el7.noarch.rpm
 rpm --import https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
-yum update
+apt update
 rpm -Uvh rabbitmq-server-3.6.10-1.el7.noarch.rpm
 systemctl start rabbitmq-server
 systemctl enable rabbitmq-server
@@ -95,8 +95,6 @@ echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config
 rabbitmqctl add_user test test
 rabbitmqctl set_user_tags test administrator
 systemctl restart rabbitmq-server
-
-
 
                EOF
 
